@@ -3,6 +3,15 @@ import uuid
 from flask import jsonify, render_template, redirect, request, flash, session
 from app.model import User
 
+# Define routes that don't require login
+allowed_routes = ['login', 'register', 'home']
+
+@app.before_request
+def check_signed_in():
+    # print('user_id' in session)
+    if not session.get('user_id') and request.endpoint not in allowed_routes:
+        return redirect('/')
+
 @app.route('/')
 def home():
     if 'user_id' in session:
@@ -15,13 +24,14 @@ def register():
         return redirect('/dashboard')
     if request.method == 'POST':
         username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
 
         # Hash the password
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
         # Create a new user
-        new_user = User(username=username, password=hashed_password)
+        new_user = User(username=username,email=email,  password=hashed_password)
         db.session.add(new_user)
         db.session.commit()
 
@@ -40,6 +50,8 @@ def login():
 
         # Retrieve the user from the database
         user = User.query.filter_by(username=username).first()
+        if user is None:
+            user = User.query.filter_by(email=username).first()
 
         if user and bcrypt.check_password_hash(user.password, password):
             # Store the user ID in the session
@@ -54,11 +66,7 @@ def login():
 
 @app.route('/dashboard')
 def dashboard():
-    # Check if the user is logged in
-    if 'user_id' not in session:
-        flash('Please log in to access the dashboard.', 'danger')
-        return redirect('/login')
-
+    session.get('user_id')
     return render_template('dashboard.html')
 
 @app.route('/logout')
