@@ -6,7 +6,7 @@
 
 ```ps
 pip 3.9 -m venv .venv
-sudo pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 ## Usage

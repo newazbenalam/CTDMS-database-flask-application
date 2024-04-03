@@ -1,16 +1,24 @@
+import os
 from app import app, db, bcrypt
 import uuid
-from flask import jsonify, render_template, redirect, request, flash, session
+from flask import jsonify, render_template, redirect, request, flash, send_from_directory, session
+from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from app.model import User
 
 # Define routes that don't require login
-allowed_routes = ['login', 'register', 'home']
+allowed_routes = ['login', 'register', 'home', 'assets', 'static']
+
+@app.route('/assets/<path:filename>')
+@app.route('/static/<path:filename>')
+def serve_assets(filename):
+    return send_from_directory(os.path.join(app.root_path, 'static'), filename)
 
 @app.before_request
 def check_signed_in():
     # print('user_id' in session)
-    if not session.get('user_id') and request.endpoint not in allowed_routes:
-        return redirect('/')
+    if session.get('user_id') and (request.endpoint == 'login' or  request.endpoint == 'register' ):
+        return redirect('/dashboard')
+    
 
 @app.route('/')
 def home():
@@ -54,6 +62,7 @@ def login():
             user = User.query.filter_by(email=username).first()
 
         if user and bcrypt.check_password_hash(user.password, password):
+            login_user(user=user, remember=True)
             # Store the user ID in the session
             session['user_id'] = user.id
             session['token'] = uuid.uuid4()
@@ -65,6 +74,7 @@ def login():
     return render_template('login.html')
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
     session.get('user_id')
     return render_template('dashboard.html')
@@ -72,6 +82,7 @@ def dashboard():
 @app.route('/logout')
 def logout():
     # Clear the session
+    logout_user()
     session.clear()
     flash('You have been logged out.', 'success')
     return redirect('/login')

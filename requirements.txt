@@ -1,7 +1,10 @@
 flask
 flask_bcrypt
-requests
 flask_sqlalchemy
+Flask-Migrate
+flask_login
+Flask-Migrate
+flask_cors
+requests
 pymysql
 python-dotenv
-Flask-Migrate

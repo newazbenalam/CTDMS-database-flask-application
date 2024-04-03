@@ -1,0 +1,11 @@
+# Allow access to these file extensions within the /static directory
+
+<FilesMatch "\.(html|jpg|png|css|json)$">
+Order Allow,Deny
+Allow from all
+</FilesMatch>
+
+<!-- <FilesMatch "\.(py|txt|log|zip|pyc|gitignore|env|htaccess)$">
+Order Allow,Deny
+Deny from all
+</FilesMatch> -->
