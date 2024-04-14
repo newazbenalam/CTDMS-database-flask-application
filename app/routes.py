@@ -1,9 +1,11 @@
 import os
+
+from sqlalchemy import or_
 from app import app, db, bcrypt
 import uuid
-from flask import jsonify, render_template, redirect, request, flash, send_from_directory, session
+from flask import jsonify, render_template, redirect, request, flash, send_from_directory, session, url_for
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
-from app.model import User
+from app.model import Role, User
 
 # Define routes that don't require login
 allowed_routes = ['login', 'register', 'home', 'assets', 'static']
@@ -15,7 +17,7 @@ def serve_assets(filename):
 
 @app.before_request
 def check_signed_in():
-    # print('user_id' in session)
+    print('user_id' in session)
     if session.get('user_id') and (request.endpoint == 'login' or  request.endpoint == 'register' ):
         return redirect('/dashboard')
     
@@ -34,19 +36,68 @@ def register():
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
+        role = request.form['role']
 
         # Hash the password
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
         # Create a new user
-        new_user = User(username=username,email=email,  password=hashed_password)
+        new_user = User(username=username,email=email, password=hashed_password, role=role)
         db.session.add(new_user)
         db.session.commit()
 
         flash('Registration successful! You can now log in.', 'success')
         return redirect('/login')
+    
+    roles = Role.query.all()
+    return render_template('register.html', roles=roles)
 
-    return render_template('register.html')
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    roles = Role.query.all()
+    if 'user_id' in session:
+        return redirect('/dashboard')
+    if request.method == 'POST':
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        role = request.form['role']
+
+        print(username + " " + email + " " +password + " " + role)
+
+        # Fetch the Role object based on the role_id
+        role = Role.query.get(role)
+        if role is None:
+            flash('Role does not exist', 'error')
+            return render_template('signup.html', roles=roles), 400
+        
+        user = User.query.filter(or_(User.username == username, User.email == email)).first()
+        if user:
+            flash('User already exists!', 'error')
+            return render_template('signup.html', roles=roles), 400
+        
+        # Hash the password
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+        # # Create a new user
+        new_user = User(username=username, email=email, password=hashed_password, role=role)
+        db.session.add(new_user)
+        # db.session.commit()
+        
+        # Commit changes to the database
+        try:
+            db.session.commit()
+            flash('User registered successfully!', 'success')
+            return redirect(url_for('login'))
+        except Exception as e:
+            db.session.rollback()
+            flash('Failed to register user. Please try again.', 'error')
+            return render_template('signup.html', roles=Role.query.all()), 500
+
+        # flash('Registration successful! You can now log in.', 'success')
+        # return redirect('/login')
+    return render_template('signup.html', roles=roles)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
