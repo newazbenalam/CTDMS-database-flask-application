@@ -28,6 +28,26 @@ def home():
         return redirect('/dashboard')
     return render_template('home.html')
 
+@app.route('/employee')
+def employee():
+    if 'user_id' in session:
+        return render_template('employee.html')
+    
+@app.route('/tables')
+def tables():
+    if 'user_id' in session:
+        return render_template('tables.html')
+    
+@app.route('/billing')
+def billing():
+    if 'user_id' in session:
+        return render_template('billing.html')
+    
+@app.route('/profile')
+def profile():
+    if 'user_id' in session:
+        return render_template('billing.html')
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if 'user_id' in session:
