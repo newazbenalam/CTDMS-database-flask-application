@@ -230,6 +230,15 @@ def addparticipant():
         return redirect(url_for('addparticipant')) 
     return render_template('addparticipant.html')
 
+@app.route('/participants', methods=['GET', 'POST'])
+@check_signed_in
+def participants():
+    if request.method == 'POST':
+        flash('Data created, successfully!', 'success'),
+        return redirect(url_for('addparticipant')) 
+    persons = Person.query.all()
+    return render_template('participants.html', persons=persons)
+
 @app.route('/logout')
 def logout():
     # Clear the session

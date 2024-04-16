@@ -286,7 +286,7 @@
             <h6 class="mb-2">Participants by City</h6>
           </div>
         </div>
-        <div class="table-responsive align-content-center">
+        <div class="table-responsive flex-col align-content-center">
           <table class="table align-items-center ">
             <tbody>
               {% for city, count in  data['countries'] %}
@@ -311,12 +311,12 @@
                     <h6 class="text-sm mb-0">{{ count }}</h6>
                   </div>
                 </td>
-                <td >
+                <!-- <td >
                   <div class=" mx-0 px-0 text-center">
                     <p class="text-xs font-weight-bold mb-0">Total Trails:</p>
                     <h6 class="text-sm mb-0">{{ count }}</h6>
                   </div>
-                </td>
+                </td> -->
               </tr>
               
               {% endfor %}
