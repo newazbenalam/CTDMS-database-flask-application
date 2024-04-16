@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+
+{% block title %}Participant | CTDMS{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0 d-flex align-items-center align-text-top">
+                    <h6>Add New Participant</h6>
+                </div>
+                <div class="card-body">
+                    <form action="/addparticipant" method="post">
+
+                        <div class="row">
+                            {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                <div class="alert alert-success text-white">
+                                    {% for message in messages %}
+                                        {{ message }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="item-text-input" class="form-control-label"
+                                        style="background: transparent; --darkreader-inline-bgimage: initial; --darkreader-inline-bgcolor: transparent;"
+                                        data-darkreader-inline-bgimage="" data-darkreader-inline-bgcolor="">
+                                        Name</label>
+                                    <input class="form-control" type="text" placeholder="Enter Name" id="name"
+                                        name="name" onfocus="focused(this)" onfocusout="defocused(this)" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dis-text-input" class="form-control-label">Gender</label>
+                                    <input class="form-control" id="gender" name="gender" type="text"
+                                        placeholder="Male/Female/Other" onfocus="focused(this)"
+                                        onfocusout="defocused(this)" required="">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="price-text-input" class="form-control-label">Email</label>
+                                    <input class="form-control" type="email" id="email" name="email"
+                                        placeholder="email@email.com" onfocus="focused(this)"
+                                        onfocusout="defocused(this)" required="">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="price-text-input" class="form-control-label">Date of Birth:</label>
+                                    <input class="form-control" type="date" id="dob" name="dob" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dis-text-input" class="form-control-label">Race</label>
+                                    <input class="form-control" type="text" id="race" name="race" type="text"
+                                        placeholder="Race/Asian" onfocus="focused(this)" onfocusout="defocused(this)"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dis-text-input" class="form-control-label">Ethnicity</label>
+                                    <input class="form-control" type="text" id="ethnicity" name="ethnicity" type="text"
+                                        placeholder="Ethnicity/Other" onfocus="focused(this)"
+                                        onfocusout="defocused(this)" required>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-6">
+                <div class="form-group">
+                  <label for="price-text-input" class="form-control-label">Phone</label>
+                  <input class="form-control" type="number" placeholder="Price in BDT" onfocus="focused(this)" onfocusout="defocused(this)" required="">
+                </div>
+              </div> -->
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dis-text-input" class="form-control-label">Address 1</label>
+                                    <input class="form-control" type="text" id="address_1" name="address_1" required
+                                        type="text" placeholder="House 000, Road 1, Unicorn, Mars"
+                                        onfocus="focused(this)" onfocusout="defocused(this)" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dis-text-input" class="form-control-label">Address 2</label>
+                                    <input class="form-control" type="text" id="address_2" name="address_2" required
+                                        type="text" placeholder="House 000, Road 1, Unicorn, Mars"
+                                        onfocus="focused(this)" onfocusout="defocused(this)" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dis-text-input" class="form-control-label">City</label>
+                                    <input class="form-control" type="text" id="city" name="city" required type="text"
+                                        placeholder="Dhaka" onfocus="focused(this)" onfocusout="defocused(this)"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dis-text-input" class="form-control-label">State</label>
+                                    <input class="form-control" type="text" id="state" name="state" required type="text"
+                                        placeholder="Dhaka/NY" onfocus="focused(this)" onfocusout="defocused(this)"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dis-text-input" class="form-control-label">Zip</label>
+                                    <input class="form-control" type="text" id="zip" name="zip" required type="number"
+                                        placeholder="1200" onfocus="focused(this)" onfocusout="defocused(this)"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dis-text-input" class="form-control-label">County</label>
+                                    <input class="form-control" type="text" id="county" name="county" required
+                                        type="text" placeholder="Bangladesh/Canada" onfocus="focused(this)"
+                                        onfocusout="defocused(this)" required>
+                                </div>
+                            </div>
+
+
+                            <div class="input-group col-md-3">
+                                <div class="custom-file">
+                                    <input type="file" style="display: none;" class="custom-file-input" id="customFile"
+                                        accept=".jpg, .jpeg, .png" multiple="false" onchange="displayFileName()">
+                                    <label class="custom-file-label" for="customFile">
+                                        <div class="input-group-append btn bg-gradient-secondary btn-sm ms-auto">
+                                            Select File
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 flex d-flex justify-content-end">
+
+                                <button  type="submit" id="confirmBtn" class="btn bg-gradient-primary btn-sm ms-auto">Confirm</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- <div class="col-12">
+        <div class="card mb-4">
+          <div class="card-header pb-0 d-flex align-items-center align-text-top">
+            <h6>Manage Category</h6>
+          </div>
+          <div class=" card-body mb-0">
+            <div class="row">
+              <div class="col-md-12 flex">
+                <label for="item-text-input" class="form-control-label" style="background: transparent; --darkreader-inline-bgimage: initial; --darkreader-inline-bgcolor: transparent;" data-darkreader-inline-bgimage="" data-darkreader-inline-bgcolor="">Create New
+                  Category</label>
+                <div class="input-group mb-3">
+  
+                  <input type="text" class="form-control form-control-cat" placeholder="Enter new category title" aria-label="Enter new category title" aria-describedby="button-addon2" onfocus="focused(this)" onfocusout="defocused(this)">
+                  <button class="btn bg-gradient-primary mb-0" type="button" id="button-addon2" onclick="addItemCat(this)">Add</button>
+                </div>
+              </div>
+              
+                <div class="form-group col-md-6">
+                  <label for="exampleF">Category</label>
+                  <select class="form-control" id="exampleFormControlSelect3" required="">
+                    <option value="">Select Category</option>
+                    
+                    <option value="1" data-category="1">🔥 Popular</option>
+                    
+                    <option value="2" data-category="2">🍹 Classic Cocktails</option>
+                    
+                    <option value="3" data-category="3">🍺 Shooters</option>
+                    
+                    <option value="4" data-category="4">🍝 Food Menu</option>
+                    
+                    <option value="15" data-category="15">✨ Promotion</option>
+                    
+                  </select>
+                </div>
+      
+                <div class="col-md-6">
+                  <label for="item-text-input" class="form-control-label" style="background: transparent; --darkreader-inline-bgimage: initial; --darkreader-inline-bgcolor: transparent;" data-darkreader-inline-bgimage="" data-darkreader-inline-bgcolor="">Create New
+                    Sub-Category</label>
+                  <div class="input-group mb-3">
+      
+                    <input type="text" class="form-control form-control-sub" placeholder="Enter sub category title" aria-label="Enter sub category title" aria-describedby="button-addon2" onfocus="focused(this)" onfocusout="defocused(this)">
+                    <button class="btn bg-gradient-primary mb-0" type="button" id="button-addon2" onclick="addItemSub(this)">Add</button>
+                  </div>
+      
+              
+            </div>
+          </div>
+  
+  
+          <div class="row">
+            
+          </div>
+        </div>
+      </div>
+  
+    </div> -->
+
+
+    </div>
+
+</div>
+
+{% endblock %}

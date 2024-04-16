@@ -1,11 +1,13 @@
+from datetime import datetime
+from functools import wraps
 import os
 
-from sqlalchemy import or_
+from sqlalchemy import func, or_
 from app import app, db, bcrypt
 import uuid
 from flask import jsonify, render_template, redirect, request, flash, send_from_directory, session, url_for
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
-from app.model import Role, User
+from app.model import Drug, Employee, Person, Phase, Role, Test, User
 
 # Define routes that don't require login
 allowed_routes = ['login', 'register', 'home', 'assets', 'static']
@@ -15,12 +17,17 @@ allowed_routes = ['login', 'register', 'home', 'assets', 'static']
 def serve_assets(filename):
     return send_from_directory(os.path.join(app.root_path, 'static'), filename)
 
-@app.before_request
-def check_signed_in():
-    print('user_id' in session)
-    if session.get('user_id') and (request.endpoint == 'login' or  request.endpoint == 'register' ):
-        return redirect('/dashboard')
-    
+def check_signed_in(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if any(endpoint.startswith(route) for route in allowed_routes for endpoint in [request.endpoint, request.endpoint.split('.')[0]]):
+            return f(*args, **kwargs)
+        
+        if 'user_id' not in session:
+            return redirect('/login')
+        
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route('/')
 def home():
@@ -119,6 +126,46 @@ def signup():
     return render_template('signup.html', roles=roles)
 
 
+@app.route('/dashboard')
+@check_signed_in
+def dashboard():
+    data = {
+        'participants': 0,
+        'employees': 0
+    }
+    user_id = session.get('user_id')
+    if user_id:
+        data['participants'] = Person.query.count()
+        data['drug'] = Drug.query.count()
+        data['employees'] = Employee.query.count()
+        data['test'] = Test.query.count()
+        data['countries'] = db.session.query(Person.city, func.count(Person.person_id)).group_by(Person.city).all()
+        data['phases_c'] = Phase.query.count()
+        data['phases'] = db.session.query(
+                            func.extract('year', Phase.created_at).label('year'),
+                            func.extract('month', Phase.created_at).label('month'),
+                            func.count(Phase.phase_id).label('phase_count')
+                        ).group_by('year', 'month').all()
+
+        month_names = {
+            1: 'Jan',2: 'Feb', 3: 'Mar', 4: 'Apr',
+            5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug',
+            9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec'
+        }
+        phase_counts = []
+        for year, month, count in data['phases']:
+            month_name = month_names.get(month, 'Unknown')
+            print(f"Year: {year}, Month: {month_name}, Phase Count: {count}")
+            phase_counts.append({'year': year, 'month': month_name, 'count': count})
+        
+        # for year, month, count in data['phases']:
+        #     print(f"Year: {year}, Month: {month}, Phase Count: {count}")
+    # print("SQL Query:", str(data['countries']))
+    # for city, count in data['countries']:
+    #     print(f"City: {city}, Count: {count}")
+    return render_template('dashboard.html', data=data, phase_counts=phase_counts)
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if 'user_id' in session:
@@ -144,11 +191,44 @@ def login():
 
     return render_template('login.html')
 
-@app.route('/dashboard')
-@login_required
-def dashboard():
-    session.get('user_id')
-    return render_template('dashboard.html')
+
+@app.route('/addparticipant', methods=['GET', 'POST'])
+@check_signed_in
+def addparticipant():
+    if request.method == 'POST':
+        today = datetime.now()
+        # Extract location data from form
+        address_1 = request.form['address_1']
+        address_2 = request.form['address_2']
+        city = request.form['city']
+        state = request.form['state']
+        zip_code = request.form['zip']
+        county = request.form['county']
+
+        # Extract person data from form
+        name = request.form['name']
+        gender = request.form['gender']
+        # age = int(request.form['age'])
+        email = request.form['email']
+        race = request.form['race']
+        ethnicity = request.form['ethnicity']
+        dob = datetime.strptime(request.form['dob'], '%Y-%m-%d')
+        age = today.year - dob.year - ((today.month, today.day) < (dob.month, dob.day))
+
+        # Create location object
+        # location = Location(address_1=address_1, address_2=address_2, city=city, state=state, zip=zip_code, county=county)
+        
+        # Create person object
+        person = Person(name=name, gender=gender, age=age, email=email, birth_datetime=dob, address_1=address_1, address_2=address_2, city=city, state=state, zip=zip_code, county=county, race=race, ethnicity=ethnicity)
+
+        # Add objects to session and commit to database
+        # db.session.add(location)
+        db.session.add(person)
+        db.session.commit()
+
+        flash('Data created, successfully!', 'success'),
+        return redirect(url_for('addparticipant')) 
+    return render_template('addparticipant.html')
 
 @app.route('/logout')
 def logout():
@@ -170,7 +250,7 @@ def users():
 def response():
     return jsonify(session)
 
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True)
+# if __name__ == '__main__':
+#     with app.app_context():
+#         db.create_all()
+#     app.run(debug=True)

@@ -1,5 +1,5 @@
 import os
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 import pymysql
@@ -22,13 +22,8 @@ login_manager.login_view = 'login'
 def load_user(user_id):
     return model.User.query.get(int(user_id))
 
+
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
-
-def create_app(debug=False):
-    app.debug = debug
-    with app.app_context():
-        db.create_all()
-    return app
 
 from . import routes, model
