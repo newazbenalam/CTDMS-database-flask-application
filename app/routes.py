@@ -36,9 +36,56 @@ def home():
     return render_template('home.html')
 
 @app.route('/employee')
+@check_signed_in
 def employee():
-    if 'user_id' in session:
-        return render_template('employee.html')
+    if request.method == 'POST':
+        flash('Data created, successfully!', 'success'),
+        return redirect(url_for('dashboard')) 
+    employees = Employee.query.all()
+
+    return render_template('employee.html', persons=employees)
+
+@app.route('/addemployee', methods=['GET','POST'])
+@check_signed_in
+def addemployee():
+    if request.method == 'POST':
+        name = request.form['name']
+        gender = request.form['gender']
+        address = request.form['address']
+        nid = request.form['nid']
+        role = request.form['role']
+        city = request.form['city']
+        state = request.form['state']
+        zip_code = request.form['zip']
+        county = request.form['county']
+
+        new_employee = Employee(
+            employee_id = str(uuid.uuid4()),
+            name=name,
+            gender=gender,
+            address=address,
+            nid=nid,
+            role=role,
+            city=city,
+            state=state,
+            zip=zip_code,
+            county=county,
+            enrolled_at=datetime.now()
+        )
+
+        db.session.add(new_employee)
+        db.session.commit()
+        flash('Created successful!', 'success')
+        return render_template('addemployee.html')
+    return render_template('addemployee.html', roles=Role.query.all())
+
+        
+@app.route('/drugs')
+@check_signed_in
+def drugs():
+    drugs = Drug.query.all()
+    return render_template('drugs.html', drugs=drugs)
+
     
 @app.route('/tables')
 def tables():
@@ -51,6 +98,7 @@ def billing():
         return render_template('billing.html')
     
 @app.route('/profile')
+@check_signed_in
 def profile():
     if 'user_id' in session:
         return render_template('billing.html')

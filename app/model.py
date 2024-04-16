@@ -20,6 +20,8 @@ class User(db.Model, UserMixin):
 class Drug(db.Model):
     drug_id = db.Column(db.String(10), primary_key=True)
     name = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.String(255), nullable=False)
+    agency = db.Column(db.String(255), nullable=True)
 
 class DrugAdmission(db.Model):
     drug_admission_id = db.Column(db.String(10), primary_key=True)
@@ -32,15 +34,15 @@ class DrugAdmission(db.Model):
 class Employee(db.Model):
     employee_id = db.Column(db.String(10), primary_key=True)
     name = db.Column(db.String(255))
+    gender = db.Column(db.String(6))
     address = db.Column(db.String(255))
     nid = db.Column(db.String(15))
     role = db.Column(db.String(100))
-    address_1 = db.Column(db.String(255))
-    address_2 = db.Column(db.String(255))
     city = db.Column(db.String(255))
     state = db.Column(db.String(2))
     zip = db.Column(db.String(10))
     county = db.Column(db.String(255))
+    enrolled_at=db.Column(db.DateTime)
     # location_id = db.Column(db.Integer, db.ForeignKey('location.location_id'),  nullable=True)
 
 # class Location(db.Model):

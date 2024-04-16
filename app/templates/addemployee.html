@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}Add Employee | CTDMS{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0 d-flex align-items-center align-text-top">
+                    <h6>Add New Employee</h6>
+                </div>
+                <div class="card-body">
+                    <form action="/addemployee" method="post">
+                        <div class="row">
+                            {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                            <div class="alert alert-success text-white">
+                                {% for message in messages %}
+                                {{ message }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            {% endwith %}
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="name" class="form-control-label">Name</label>
+                                    <input class="form-control" type="text" id="name" name="name" placeholder="Enter Name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="gender" class="form-control-label">Gender</label>
+                                    <input class="form-control" type="text" id="gender" name="gender" placeholder="Male/Female/Other" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="email" class="form-control-label">Email</label>
+                                    <input class="form-control" type="email" id="email" name="email" placeholder="email@email.com" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dob" class="form-control-label">Date of Birth:</label>
+                                    <input class="form-control" type="date" id="dob" name="dob" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="nid" class="form-control-label">SSN/NID</label>
+                                    <input class="form-control" type="number" id="nid" name="nid" placeholder="SSN/NID/Passport" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="address" class="form-control-label">Address</label>
+                                    <input class="form-control" type="text" id="address" name="address" placeholder="House 000, Road 1, Unicorn, Mars" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="city" class="form-control-label">City</label>
+                                    <input class="form-control" type="text" id="city" name="city" placeholder="Dhaka" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="state" class="form-control-label">State</label>
+                                    <input class="form-control" type="text" id="state" name="state" placeholder="Dhaka/NY" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="zip" class="form-control-label">Zip</label>
+                                    <input class="form-control" type="text" id="zip" name="zip" placeholder="1200" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="county" class="form-control-label">Country</label>
+                                    <input class="form-control" type="text" id="county" name="county" placeholder="Bangladesh/Canada" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="role" class="form-control-label">Role</label>
+                                    <select class="form-control" id="role" name="role" required>
+                                        {% for role in roles %}
+                                            <option value="{{ role.name }}">{{ role.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 flex d-flex justify-content-end">
+                            <button type="submit" id="confirmBtn" class="btn bg-gradient-primary btn-sm ms-auto">Confirm</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

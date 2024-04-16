@@ -99,9 +99,19 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% if request.path == url_for('participants') %}active{% endif %}"
-                        href="{{ url_for('participants') }}">
+                    <a class="nav-link {% if request.path == url_for('addemployee') %}active{% endif %}"
+                        href="{{ url_for('addemployee') }}">
                         <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-fat-add text-primary text-lg opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Add Employee</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == url_for('participants') %}active{% endif %}"
+                    href="{{ url_for('participants') }}">
+                    <div
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-user-run text-primary text-lg opacity-10"></i>
                         </div>
@@ -115,7 +125,17 @@
                             class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                             <i class="ni ni-ambulance text-warning text-sm opacity-10"></i>
                         </div>
-                        <span class="nav-link-text ms-1">Employee</span>
+                        <span class="nav-link-text ms-1">Employees</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == url_for('drugs') %}active{% endif %}"
+                        href="{{ url_for('drugs') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-folder-17 text-warning text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Drugs</span>
                     </a>
                 </li>
                 <!-- <li class="nav-item">
@@ -139,7 +159,7 @@
                         <span class="nav-link-text ms-1">Tables</span>
                     </a>
                     <ul class="submenu collapse">
-                        <li><a class="nav-link" href="/ordertables">Orders List</a></li>
+                        <li><a class="nav-link" href="/ordertables">Permission List</a></li>
                         <li><a class="nav-link" href="/menuitems">Menu Items</a></li>
                         <li><a class="nav-link" href="#">Submenu item 3 </a> </li>
                     </ul>
