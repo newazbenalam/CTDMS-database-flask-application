@@ -17,10 +17,11 @@ INSERT INTO `location` (`location_id`, `address_1`, `address_2`, `city`, `state`
 (3, '789 Elm St', '', 'Anotherplace', 'TX', '67890', 'Another County');
 
 -- Insert fake data into the `person` table
-INSERT INTO `person` (`person_id`, `name`, `gender`, `age`, `address`, `city`, `email`, `year_of_birth`, `month_of_birth`, `day_of_birth`, `birth_datetime`, `race_id`, `ethnicity_id`, `location_id`, `care_site_id`) VALUES
-(1, 'Alice Johnson', 'Female', 30, '123 Elm St', 'Anytown', 'alice@example.com', 1994, 5, 12, '1994-05-12 00:00:00', 'R001', 1, 1, NULL),
-(2, 'Bob Smith', 'Male', 45, '456 Oak St', 'Otherville', 'bob@example.com', 1979, 10, 25, '1979-10-25 00:00:00', 'R002', 2, 2, NULL),
-(3, 'Charlie Brown', 'Male', 25, '789 Maple St', 'Anotherplace', 'charlie@example.com', 1999, 8, 3, '1999-08-03 00:00:00', 'R003', 3, 3, NULL);
+--@block
+INSERT INTO `person` ( `name`, `gender`, `age`, `address`, `city`, `email`, `year_of_birth`, `month_of_birth`, `day_of_birth`, `birth_datetime`, `race_id`, `ethnicity_id`, `location_id`, `care_site_id`) VALUES
+( 'Alice Johnson', 'Female', 30, '123 Elm St', 'Anytown', 'alice@example.com', 1994, 5, 12, '1994-05-12 00:00:00', 'R001', 1, 1, NULL),
+( 'Bob Smith', 'Male', 45, '456 Oak St', 'Otherville', 'bob@example.com', 1979, 10, 25, '1979-10-25 00:00:00', 'R002', 2, 2, NULL),
+( 'Charlie Brown', 'Male', 25, '789 Maple St', 'Anotherplace', 'charlie@example.com', 1999, 8, 3, '1999-08-03 00:00:00', 'R003', 3, 3, NULL);
 
 -- Insert fake data into the `study` table
 INSERT INTO `study` (`study_id`, `name`, `type`, `criteria`, `drug_of_interest_id`) VALUES
