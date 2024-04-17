@@ -7,7 +7,7 @@ from app import app, db, bcrypt
 import uuid
 from flask import jsonify, render_template, redirect, request, flash, send_from_directory, session, url_for
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
-from app.model import Drug, Employee, Person, Phase, Role, Test, User
+from app.model import Drug, Employee, Person, Phase, Role, Study, Test, User
 
 # Define routes that don't require login
 allowed_routes = ['login', 'register', 'home', 'assets', 'static']
@@ -86,6 +86,24 @@ def drugs():
     drugs = Drug.query.all()
     return render_template('drugs.html', drugs=drugs)
 
+
+@app.route('/addstudy', methods=['GET', 'POST'])
+def add_study():
+    if request.method == 'POST':
+        study_id = request.form['study_id']
+        name = request.form['name']
+        type = request.form['type']
+        criteria = request.form['criteria']
+        drug_of_interest_id = request.form['drug_of_interest_id']
+        
+        new_study = Study(study_id=study_id, name=name, type=type, criteria=criteria, drug_of_interest_id=drug_of_interest_id)
+        db.session.add(new_study)
+        db.session.commit()
+        
+        flash('Study added successfully!', 'success')
+        return redirect(url_for('add_study'))
+    
+    return render_template('add_study.html' , drugs=Drug.query.all())
     
 @app.route('/tables')
 def tables():
