@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Study | CTDMS{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+  <div class="row">
+      <div class="col-12">
+          <div class="card mb-4">
+              <div class="card-header pb-0 d-flex align-items-center align-text-top">
+                  <h6>Add New Phase</h6>
+              </div>
+              <div class="card-body">
+                  <form action="/addphase" method="post">
+                      <div class="row">
+                          {% with messages = get_flashed_messages() %}
+                          {% if messages %}
+                          <div class="alert alert-success text-white">
+                              {% for message in messages %}
+                              {{ message }}
+                              {% endfor %}
+                          </div>
+                          {% endif %}
+                          {% endwith %}
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <label for="drug_dosage" class="form-control-label">Drug Dosage</label>
+                                  <input class="form-control" type="text" id="drug_dosage" name="drug_dosage" placeholder="Enter Drug Dosage" required>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <label for="frequency" class="form-control-label">Frequency</label>
+                                  <input class="form-control" type="text" id="frequency" name="frequency" placeholder="Enter Frequency" required>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <label for="description" class="form-control-label">Description</label>
+                                  <input class="form-control" type="text" id="description" name="description" placeholder="Enter Description">
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="role" class="form-control-label">Study ID</label>
+                              <select class="form-control" id="study_id" name="study_id" required>
+                                {% for drug in studies %}
+                                <option value="{{ drug.study_id }}">{{ drug.name }}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                          <!-- <div class="col-md-6">
+                              <div class="form-group">
+                                  <label for="exist_drug_id" class="form-control-label">Existing Drug ID</label>
+                                  <input class="form-control" type="text" id="exist_drug_id" name="exist_drug_id" placeholder="Enter Existing Drug ID">
+                              </div>
+                          </div> -->
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="role" class="form-control-label">Drug of Interest ID</label>
+                              <select class="form-control" id="exist_drug_id" name="exist_drug_id" required>
+                                {% for drug in drugs %}
+                                <option value="{{ drug.drug_id }}">{{ drug.name }}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                      </div>
+                      <div class="col-md-12 flex d-flex justify-content-end">
+                          <button type="submit" id="confirmBtn" class="btn bg-gradient-primary btn-sm ms-auto">Confirm</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+{% endblock %}

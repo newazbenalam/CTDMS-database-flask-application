@@ -81,7 +81,7 @@ class Person(db.Model):
         return f"Person('{self.name}')"
 
 class Phase(db.Model):
-    phase_id = db.Column(db.String(10), primary_key=True, autoincrement=True)
+    phase_id = db.Column(db.String(10), primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     drug_dosage = db.Column(db.String(50))
     frequency = db.Column(db.String(50))

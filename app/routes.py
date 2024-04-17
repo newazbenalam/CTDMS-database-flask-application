@@ -7,7 +7,7 @@ from app import app, db, bcrypt
 import uuid
 from flask import jsonify, render_template, redirect, request, flash, send_from_directory, session, url_for
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
-from app.model import Drug, Employee, Person, Phase, Role, Study, Test, User
+from app.model import Drug, DrugAdmission, Employee, Person, Phase, Role, Study, Test, User
 
 # Define routes that don't require login
 allowed_routes = ['login', 'register', 'home', 'assets', 'static']
@@ -33,7 +33,7 @@ def check_signed_in(f):
 def home():
     if 'user_id' in session:
         return redirect('/dashboard')
-    return render_template('home.html')
+    return render_template('login.html')
 
 @app.route('/employee')
 @check_signed_in
@@ -88,6 +88,7 @@ def drugs():
 
 
 @app.route('/addstudy', methods=['GET', 'POST'])
+@check_signed_in
 def add_study():
     if request.method == 'POST':
         study_id = request.form['study_id']
@@ -105,6 +106,66 @@ def add_study():
     
     return render_template('add_study.html' , drugs=Drug.query.all())
     
+@app.route('/addphase', methods=['GET', 'POST'])
+@check_signed_in
+def add_phase():
+    if request.method == 'POST':
+        drug_dosage = request.form['drug_dosage']
+        frequency = request.form['frequency']
+        description = request.form['description']
+        study_id = request.form['study_id']
+        exist_drug_id = request.form['exist_drug_id']
+        
+        new_phase = Phase(phase_id=str(uuid.uuid4()), drug_dosage=drug_dosage, frequency=frequency, description=description, 
+                          study_id=study_id, exist_drug_id=exist_drug_id)
+        db.session.add(new_phase)
+        db.session.commit()
+        
+        flash('Phase added successfully!', 'success')
+        return redirect(url_for('add_phase'))
+    
+    return render_template('add_phase.html', drugs=Drug.query.all(), studies=Study.query.all())
+
+
+@app.route('/view_phases')
+def view_phases():
+    phases = Phase.query.all()
+    return render_template('view_phases.html', phases=phases)
+
+@app.route('/view_studies')
+def view_studies():
+    studies = Study.query.all()
+    return render_template('view_studies.html', studies=studies)
+
+@app.route('/add_drug_admission', methods=['GET', 'POST'])
+def add_drug_admission():
+    if request.method == 'POST':
+        drug_type = request.form['drug_type']
+        date_of_administration = request.form['date_of_administration']
+        participant_id = request.form['participant_id']
+        study_id = request.form['study_id']
+        drug_admin_id = request.form['drug_admin_id']
+
+        # Create a new DrugAdmission object
+        new_admission = DrugAdmission(drug_admission_id=str(uuid.uuid4()), drug_type=drug_type, date_of_administration=date_of_administration,
+                                      participant_id=participant_id, study_id=study_id, drug_admin_id=drug_admin_id)
+
+        # Add the new admission to the database session
+        db.session.add(new_admission)
+        
+        # Commit the changes to the database
+        db.session.commit()
+
+        # Flash a success message
+        flash('Drug admission added successfully!', 'success')
+
+        # Redirect to the page where the form was submitted from
+        return redirect(request.referrer)
+    else:
+        # If the request method is GET, simply render the add_drug_admission.html template
+        return render_template('add_drug_admission.html', studies=Study.query.all(), employees=Employee.query.all(), persons=Person.query.all(), drug_admissions=DrugAdmission.query.all())
+
+
 @app.route('/tables')
 def tables():
     if 'user_id' in session:

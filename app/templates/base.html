@@ -138,6 +138,15 @@
                         <span class="nav-link-text ms-1">Drugs</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == url_for('view_phases') %}active{% endif %}"
+                        href="{{ url_for('view_phases') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-folder-17 text-warning text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">View Phases</span>
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == url_for('add_study') %}active{% endif %}"
@@ -147,6 +156,26 @@
                             <i class="ni ni-fat-add text-warning text-sm opacity-10"></i>
                         </div>
                         <span class="nav-link-text ms-1">Add Study</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == url_for('add_phase') %}active{% endif %}"
+                        href="{{ url_for('add_phase') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-fat-add text-warning text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Add Phase</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == url_for('add_drug_admission') %}active{% endif %}"
+                        href="{{ url_for('add_drug_admission') }}">
+                        <div
+                            class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-fat-add text-warning text-sm opacity-10"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Drug Admission</span>
                     </a>
                 </li>
                 <!-- <li class="nav-item">

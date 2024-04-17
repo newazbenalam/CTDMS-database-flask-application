@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Drugs | CTDMS{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-header pb-0">
+          <h6>Phase Table</h6>
+        </div>
+        <div class="card-body px-0 pt-0 pb-2">
+          <div class="table-responsive p-0">
+            <table class="table align-items-center mb-0">
+              <thead>
+                <tr>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Phase ID</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Created At</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Drug Dosage</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Frequency</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for phase in phases %}
+                <tr>
+                  <td class="align-middle text-start">
+                    <span class="text-secondary text-xs font-weight-bold">{{ phase.phase_id }}</span>
+                  </td>
+                  <td>
+                    <span class="text-xs font-weight-bold">{{ phase.created_at }}</span>
+                  </td>
+                  <td>
+                    <span class="text-xs font-weight-bold">{{ phase.drug_dosage }}</span>
+                  </td>
+                  <td>
+                    <span class="text-xs font-weight-bold">{{ phase.frequency }}</span>
+                  </td>
+                  <td>
+                    <span class="text-xs font-weight-bold">{{ phase.description }}</span>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  
+{% endblock %}

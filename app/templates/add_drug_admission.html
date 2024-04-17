@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Add Drug Admission | CTDMS{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+  <div class="row">
+      <div class="col-12">
+          <div class="card mb-4">
+              <div class="card-header pb-0 d-flex align-items-center align-text-top">
+                  <h6>Add Drug Admission</h6>
+              </div>
+              <div class="card-body">
+                  <form action="/add_drug_admission" method="post">
+                      <div class="row">
+                          {% with messages = get_flashed_messages() %}
+                          {% if messages %}
+                          <div class="alert alert-success text-white">
+                              {% for message in messages %}
+                              {{ message }}
+                              {% endfor %}
+                          </div>
+                          {% endif %}
+                          {% endwith %}
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <label for="drug_type" class="form-control-label">Drug Type</label>
+                                  <input class="form-control" type="text" id="drug_type" name="drug_type" placeholder="Enter Drug Type" required>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                              <div class="form-group">
+                                  <label for="date_of_administration" class="form-control-label">Date of Administration</label>
+                                  <input class="form-control" type="date" id="date_of_administration" name="date_of_administration" required>
+                              </div>
+                          </div>
+
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="role" class="form-control-label">Participant ID</label>
+                              <select class="form-control" id="participant_id" name="participant_id" required>
+                                {% for employee in persons %}
+                                <option value="{{ employee.person_id }}">{{ employee.name }}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="role" class="form-control-label">Study ID</label>
+                              <select class="form-control" id="study_id" name="study_id" required>
+                                {% for employee in studies %}
+                                <option value="{{ employee.study_id }}">{{ employee.name }}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="role" class="form-control-label">Drug Administrator ID</label>
+                              <select class="form-control" id="drug_admin_id" name="drug_admin_id" required>
+                                {% for employee in employees %}
+                                <option value="{{ employee.employee_id }}">{{ employee.name }}</option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                      </div>
+                      <div class="col-md-12 flex d-flex justify-content-end">
+                          <button type="submit" id="confirmBtn" class="btn bg-gradient-primary btn-sm ms-auto">Confirm</button>
+                      </div>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header pb-0">
+                <h6>Drug Admissions Table</h6>
+            </div>
+            <div class="card-body px-0 pt-0 pb-2">
+                <div class="table-responsive p-0">
+                    <table class="table align-items-center mb-0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Drug Admission ID</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Drug Type</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date of Administration</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Participant ID</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Study ID</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Drug Admin ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for admission in drug_admissions %}
+                            <tr>
+                                <td class="align-middle text-start">
+                                    <span class="text-secondary text-xs font-weight-bold">{{ admission.drug_admission_id }}</span>
+                                </td>
+                                <td>
+                                    <span class="text-xs font-weight-bold">{{ admission.drug_type }}</span>
+                                </td>
+                                <td>
+                                    <span class="text-xs font-weight-bold">{{ admission.date_of_administration }}</span>
+                                </td>
+                                <td>
+                                    <span class="text-xs font-weight-bold">{{ admission.participant_id }}</span>
+                                </td>
+                                <td>
+                                    <span class="text-xs font-weight-bold">{{ admission.study_id }}</span>
+                                </td>
+                                <td>
+                                    <span class="text-xs font-weight-bold">{{ admission.drug_admin_id }}</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}
