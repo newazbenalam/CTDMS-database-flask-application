@@ -28,3 +28,21 @@ INSERT INTO `study` (`study_id`, `name`, `type`, `criteria`, `drug_of_interest_i
 ('S001', 'Clinical Trial A', 'Randomized Controlled Trial', 'Age > 18', 'D001'),
 ('S002', 'Clinical Trial B', 'Observational Study', 'None', 'D002'),
 ('S003', 'Clinical Trial C', 'Experimental Study', 'Gender = Female', 'D003');
+
+-- Insert fake data into the `study` table
+INSERT INTO `study` (`study_id`, `name`, `type`, `criteria`, `drug_of_interest_id`) VALUES
+('S001', 'Clinical Trial A', 'Randomized Controlled Trial', 'Age > 18', 'D001'),
+('S002', 'Clinical Trial B', 'Observational Study', 'None', 'D002'),
+('S003', 'Clinical Trial C', 'Experimental Study', 'Gender = Female', 'D003');
+
+-- Insert fake data into the `study` table
+INSERT INTO `study` (`study_id`, `name`, `type`, `criteria`, `drug_of_interest_id`) VALUES
+('S001', 'Clinical Trial A', 'Randomized Controlled Trial', 'Age > 18', 'D001'),
+('S002', 'Clinical Trial B', 'Observational Study', 'None', 'D002'),
+('S003', 'Clinical Trial C', 'Experimental Study', 'Gender = Female', 'D003');
+
+-- Insert fake data into the `study` table
+INSERT INTO `study` (`study_id`, `name`, `type`, `criteria`, `drug_of_interest_id`) VALUES
+('S001', 'Clinical Trial A', 'Randomized Controlled Trial', 'Age > 18', 'D001'),
+('S002', 'Clinical Trial B', 'Observational Study', 'None', 'D002'),
+('S003', 'Clinical Trial C', 'Experimental Study', 'Gender = Female', 'D003');
